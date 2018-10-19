@@ -11,13 +11,17 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha tests --recursive",
-    "lint": "eslint . --rulesdir ./lib/rules"
+    "lint": "eslint . --rulesdir ./lib/rules",
+    "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js"
   },
   "dependencies": {
     "requireindex": "~1.2.0"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "husky": "^1.1.2",
+    "mocha": "^5.2.0",
+    "prettier": "^1.14.3",
+    "pretty-quick": "^1.8.0"
   },
   "peerDependencies": {
     "eslint": "*"
@@ -25,5 +29,10 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "huskey": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }
