@@ -1,2 +1,2 @@
-import Bar from 'molecules/Foo.vue';
-import Page from 'pages/Page.vue';
+import hoge from '../../examples/atoms/hoge';
+import Piyo from '@/pages/Piyo';

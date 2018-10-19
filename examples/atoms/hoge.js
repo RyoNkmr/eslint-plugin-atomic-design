@@ -1,3 +1,4 @@
-import Fuga from 'path/from/molecules/Fuga.vue';
+import Foo from '../organisms/Foo';
+import Piyo from '@/pages/Piyo';
 
 const fuga = new Fuga();

@@ -15,12 +15,15 @@
     "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js"
   },
   "dependencies": {
+    "eslint-import-resolver-alias": "^1.1.1",
+    "eslint-module-utils": "^2.2.0",
     "requireindex": "~1.2.0"
   },
   "devDependencies": {
     "husky": "^1.1.2",
     "mocha": "^5.2.0",
     "prettier": "^1.14.3",
+    "eslint-plugin-import": "^2.14.0",
     "pretty-quick": "^1.8.0"
   },
   "peerDependencies": {
@@ -34,5 +37,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "optionalDependencies": {
+    "eslint-import-resolver-webpack": "^0.10.1"
   }
 }

@@ -36,15 +36,18 @@ Then configure the rules you want to use under the rules section.
 ```json
 {
     "rules": {
-        "atomic-design/rule-name": 2
+        "atomic-design/no-higher-level-import": 2
     }
 }
 ```
 
-## Supported Rules
+## Rules
 
-* Fill in provided rules here
+### Hierarchical Dependencies (no-higher-level-import)
 
+```
+
+```
 
 
 
