@@ -9,14 +9,13 @@
 //------------------------------------------------------------------------------
 
 var rule = require('../../../lib/rules/no-higher-level'),
-
   RuleTester = require('eslint').RuleTester;
 
 RuleTester.setDefaultConfig({
   parserOptions: {
     ecmaVersion: 6,
-    sourceType: "module"
-  }
+    sourceType: 'module',
+  },
 });
 
 //------------------------------------------------------------------------------
@@ -25,18 +24,19 @@ RuleTester.setDefaultConfig({
 
 var ruleTester = new RuleTester();
 ruleTester.run('no-higher-level', rule, {
-
   valid: [
     // give me some code that won't trigger a warning
-    ],
+  ],
 
   invalid: [
     {
-      code: 'import HigherLevelComponent from \'./HigherLevelComponent.vue\';',
-      errors: [{
-        message: 'Fill me in.',
-        type: 'Me too'
-      }]
-    }
-  ]
+      code: "import HigherLevelComponent from './HigherLevelComponent.vue';",
+      errors: [
+        {
+          message: 'Fill me in.',
+          type: 'Me too',
+        },
+      ],
+    },
+  ],
 });
