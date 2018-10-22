@@ -11,6 +11,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha tests/lib --recursive",
+    "test:ci": "nyc mocha tests/lib --recursive && nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --rulesdir ./lib/rules",
     "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js"
   },
@@ -19,10 +20,14 @@
     "requireindex": "~1.2.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "eslint": "^5.7.0",
+    "eslint-import-resolver-alias": "^1.1.1",
     "eslint-plugin-import": "^2.14.0",
     "husky": "^1.1.2",
     "mocha": "^5.2.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^13.1.0",
     "prettier": "^1.14.3",
     "pretty-quick": "^1.8.0"
   },
@@ -35,7 +40,8 @@
     "url": "https://github.com/RyoNkmr/eslint-plugin-atomic-design/issues"
   },
   "peerDependencies": {
-    "eslint": "*"
+    "eslint": "*",
+    "eslint-import-resolver-alias": "*"
   },
   "engines": {
     "node": ">=8.9.4"

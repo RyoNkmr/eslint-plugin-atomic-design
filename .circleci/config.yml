@@ -1,0 +1,30 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/app
+  docker:
+    - image: circleci/node:10
+
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
+            - dependency-cache-{{ .Branch }}-
+      - run: npm ci
+      - run:
+          name: Run tests
+          command: npm run test:ci
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
