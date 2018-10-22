@@ -34,14 +34,14 @@ Then configure the rules you want to use under the rules section.
 ```json
 {
     "rules": {
-        "atomic-design/no-higher-level-import": 2
+        "atomic-design/hierarchical-import": 2
     }
 }
 ```
 
 ## Rules
 
-### Hierarchical Dependencies (no-higher-level-import)
+### Hierarchical Dependencies (hierarchical-import)
 This is the only rule of this plugin.
 
 #### options

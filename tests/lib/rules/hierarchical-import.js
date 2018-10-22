@@ -11,7 +11,7 @@
 const getFilePath = (...relativePath) =>
   require('path').join(process.cwd(), 'tests', 'files', ...relativePath);
 
-const rule = require('../../../lib/rules/no-higher-level-import');
+const rule = require('../../../lib/rules/hierarchical-import');
 const RuleTester = require('eslint').RuleTester;
 
 const testerSettings = {
@@ -58,7 +58,7 @@ const spec = (filePath, targetPath, others = {}) =>
 
 const ruleTester = new RuleTester(testerSettings);
 
-ruleTester.run('no-higher-level-import', rule, {
+ruleTester.run('hierarchical-import', rule, {
   valid: [
     // relative path resolution and extension omittion
     ...spec('components/molecules/Component.js', '../atoms/Component.js'),
