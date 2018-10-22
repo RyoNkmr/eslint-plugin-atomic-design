@@ -12,3 +12,4 @@ webpack.config.*.js↲
 .vscode↲
 coverage↲
 .nyc_output↲
+examples
