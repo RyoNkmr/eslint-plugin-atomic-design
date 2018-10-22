@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-atomic-design",
   "version": "0.0.1",
-  "description": "atomic design rulles",
+  "description": "ESLint rules for Atomic Designed projects",
   "keywords": [
     "eslint",
     "eslintplugin",
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/RyoNkmr/eslint-plugin-atomic-design",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RyoNkmr/eslint-plugin-atomic-design.git"
+    "url": "git+https://github.com/RyoNkmr/eslint-plugin-atomic-design.git"
   },
   "bugs": {
     "url": "https://github.com/RyoNkmr/eslint-plugin-atomic-design/issues"
