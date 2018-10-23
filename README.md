@@ -1,4 +1,8 @@
 # eslint-plugin-atomic-design
+[![npm version](https://badge.fury.io/js/eslint-plugin-atomic-design.svg)](https://badge.fury.io/js/eslint-plugin-atomic-design)
+[![CircleCI](https://circleci.com/gh/RyoNkmr/eslint-plugin-atomic-design.svg?style=svg)](https://circleci.com/gh/RyoNkmr/eslint-plugin-atomic-design)
+[![Coverage Status](https://coveralls.io/repos/github/RyoNkmr/eslint-plugin-atomic-design/badge.svg?branch=master)](https://coveralls.io/github/RyoNkmr/eslint-plugin-atomic-design?branch=master)
+![david-dm](https://david-dm.org/RyoNkmr/eslint-plugin-atomic-design.svg)
 
 ## Installation
 
@@ -56,7 +60,7 @@ Additionally this can be defined *the same level components* as Array of strings
 
 ```javascript
 {
-  levels: [['element', 'atom'], 'molecules', ['organisms', 'sections']],
+  levels: [['elements', 'atoms'], 'molecules', ['organisms', 'sections']],
 },
 ```
 
