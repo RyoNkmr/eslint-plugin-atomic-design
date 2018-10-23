@@ -16,8 +16,7 @@
     "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js"
   },
   "dependencies": {
-    "eslint-module-utils": "^2.2.0",
-    "requireindex": "~1.2.0"
+    "eslint-module-utils": "^2.2.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
