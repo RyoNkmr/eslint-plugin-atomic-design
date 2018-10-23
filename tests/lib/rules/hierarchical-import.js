@@ -139,18 +139,6 @@ ruleTester.run('hierarchical-import', rule, {
       ],
     }),
 
-    // node_modules resolution and
-    ...spec(
-      'components/molecules/Component.js',
-      'component_library/molecules/Component',
-      {
-        options: [{ excludes: [] }],
-        errors: [
-          'Do not require molecules from molecules. Molecules can contain only atoms.',
-        ],
-      }
-    ),
-
     // custom path parser
     ...spec('routes/pages/Index.js', './About.js', {
       options: [{ pathPatterns: ['routes/(\\w+)/'] }],
