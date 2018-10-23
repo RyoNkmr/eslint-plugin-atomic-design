@@ -16,12 +16,12 @@
     "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js"
   },
   "dependencies": {
-    "eslint-module-utils": "^2.2.0"
+    "eslint-module-utils": "^2.2.0",
+    "eslint-import-resolver-alias": "^1.1.1"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
     "eslint": "^5.7.0",
-    "eslint-import-resolver-alias": "^1.1.1",
     "eslint-plugin-import": "^2.14.0",
     "husky": "^1.1.2",
     "mocha": "^5.2.0",
@@ -39,8 +39,7 @@
     "url": "https://github.com/RyoNkmr/eslint-plugin-atomic-design/issues"
   },
   "peerDependencies": {
-    "eslint": "*",
-    "eslint-import-resolver-alias": "*"
+    "eslint": ">=0.8.0"
   },
   "engines": {
     "node": ">=8.9.4"
