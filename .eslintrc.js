@@ -1,18 +1,16 @@
 const resolve = require('path').resolve;
 
 module.exports = {
-  plugins: [
-    'import',
-  ],
+  plugins: ['import'],
   rules: {
-    'no-higher-level-import': 2,
+    'hierarchical-import': 2,
   },
   env: {
     node: true,
   },
   parserOptions: {
     ecmaVersion: 6,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   settings: {
     'import/resolver': {
