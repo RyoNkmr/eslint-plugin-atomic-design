@@ -12,7 +12,7 @@
   "scripts": {
     "test": "mocha tests/lib --recursive",
     "test:ci": "nyc mocha tests/lib --recursive && nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint . --rulesdir ./lib/rules",
+    "lint": "eslint examples --rulesdir ./lib/rules",
     "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js"
   },
   "dependencies": {
