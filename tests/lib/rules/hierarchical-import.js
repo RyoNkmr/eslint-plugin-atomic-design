@@ -111,6 +111,9 @@ ruleTester.run('hierarchical-import', rule, {
         ],
       }
     ),
+
+    // the same level
+    ...spec('components/organisms/Component.js', './AnotherComponent'),
   ],
 
   invalid: [
