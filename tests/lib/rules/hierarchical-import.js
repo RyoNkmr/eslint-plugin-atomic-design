@@ -86,6 +86,11 @@ ruleTester.run('hierarchical-import', rule, {
     ...spec('components/organisms/Component.js', '../concretes/Component.js', {
       options: [{ levels: ['atoms', ['molecules', 'concretes'], 'organisms'] }],
     }),
+    ...spec('components/concretes/Component.js', '../molecules/Component.js', {
+      options: [
+        { levels: ['atoms', ['molecules', '=concretes'], 'organisms'] },
+      ],
+    }),
 
     // out of rules
     ...spec('components/molecules/Component.js', '../modals/Components.js'),
@@ -124,7 +129,7 @@ ruleTester.run('hierarchical-import', rule, {
       ],
     }),
 
-    // same level import
+    // invalid same level import
     ...spec('components/atoms/Component.js', './Other', {
       errors: [
         'Do not require atoms from atoms. Atoms cannot require any other components.',
@@ -133,6 +138,14 @@ ruleTester.run('hierarchical-import', rule, {
     ...spec('components/molecules/Component.js', './Other', {
       errors: [
         'Do not require molecules from molecules. Molecules can contain only atoms.',
+      ],
+    }),
+    ...spec('components/molecules/Component.js', '../concretes/Component.js', {
+      options: [
+        { levels: ['atoms', ['molecules', '=concretes'], 'organisms'] },
+      ],
+      errors: [
+        'Do not require concretes from molecules. Molecules can contain only atoms.',
       ],
     }),
 
