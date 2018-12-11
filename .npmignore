@@ -1,6 +1,7 @@
 .babelrc↲
 .circleci↲
 .eslintrc.js↲
+.eslintignore
 .flowconfig↲
 .git↲
 .gitignore↲
@@ -14,3 +15,5 @@ webpack.config.*.js↲
 coverage↲
 .nyc_output↲
 examples
+.tern-port
+.prettierrc.js
