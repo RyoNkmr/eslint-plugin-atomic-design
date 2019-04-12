@@ -20,7 +20,7 @@ jobs:
           command: npm run test:ci
       - save_cache:
           paths:
-            - node_modules
+            - ~/.npm
           key: dependency-cache-{{ .Branch }}-{{ checksum "package.json" }}
   release_dry:
     <<: *defaults
