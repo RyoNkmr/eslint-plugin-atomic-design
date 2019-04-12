@@ -119,6 +119,26 @@ ruleTester.run('hierarchical-import', rule, {
 
     // the same level
     ...spec('components/organisms/Component.js', './AnotherComponent'),
+
+    // module-import
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      './ModuleComponentChild',
+      { options: [{ module: 'loose' }] }
+    ),
+
+    // children imports are allowed in loose mode
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponentChild.js',
+      './ModuleComponentOtherChild',
+      { options: [{ module: 'loose' }] }
+    ),
+    // strict module mode
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      './ModuleComponentOtherChild',
+      { options: [{ module: 'strict' }] }
+    ),
   ],
 
   invalid: [
@@ -164,5 +184,51 @@ ruleTester.run('hierarchical-import', rule, {
         'Do not require pages from pages. Pages can contain atoms, molecules, organisms and templates.',
       ],
     }),
+
+    // cannot import other module in module mode
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponentChild.js',
+      '../ModuleComponentOther/ModuleComponentOther.js',
+      {
+        options: [{ module: 'loose' }],
+        errors: [
+          'Do not import molecules from molecules. Molecules can contain only atoms.',
+        ],
+      }
+    ),
+
+    // children imports are blocked in the strict module mode
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponentChild.js',
+      './ModuleComponentOtherChild',
+      {
+        options: [{ module: 'strict' }],
+        errors: [
+          'In "strict" mode, Only the root module "ModuleComponent" can use its children. "ModuleComponentChild" is not root module. The children components cannot use each other.',
+        ],
+      }
+    ),
+
+    // stop the module-import
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      './ModuleComponentChild',
+      {
+        options: [{ module: 'off' }],
+        errors: [
+          'Do not import molecules from molecules. Molecules can contain only atoms.',
+        ],
+      }
+    ),
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      './ModuleComponentChild',
+      {
+        options: [{ module: false }],
+        errors: [
+          'Do not import molecules from molecules. Molecules can contain only atoms.',
+        ],
+      }
+    ),
   ],
 });
