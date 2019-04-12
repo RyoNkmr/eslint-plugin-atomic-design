@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.7.0",
     "eslint-plugin-import": "^2.14.0",
     "husky": "^1.1.2",
@@ -50,6 +51,11 @@
   "huskey": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
     }
   }
 }
