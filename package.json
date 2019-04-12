@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-atomic-design",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "description": "ESLint rules for Atomic Designed projects",
   "keywords": [
     "eslint",
@@ -13,7 +13,8 @@
     "test": "mocha tests/lib --recursive",
     "test:ci": "nyc mocha tests/lib --recursive && nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint examples --rulesdir ./lib/rules",
-    "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js"
+    "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "eslint-module-utils": "^2.2.0",
@@ -28,12 +29,13 @@
     "mocha-lcov-reporter": "^1.3.0",
     "nyc": "^13.3.0",
     "prettier": "^1.14.3",
-    "pretty-quick": "^1.8.0"
+    "pretty-quick": "^1.8.0",
+    "semantic-release": "^15.13.3"
   },
   "homepage": "https://github.com/RyoNkmr/eslint-plugin-atomic-design",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RyoNkmr/eslint-plugin-atomic-design.git"
+    "url": "https://github.com/RyoNkmr/eslint-plugin-atomic-design.git"
   },
   "bugs": {
     "url": "https://github.com/RyoNkmr/eslint-plugin-atomic-design/issues"
