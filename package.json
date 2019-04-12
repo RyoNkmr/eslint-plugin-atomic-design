@@ -17,10 +17,14 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "eslint-module-utils": "^2.2.0",
-    "eslint-import-resolver-alias": "^1.1.1"
+    "eslint-import-resolver-alias": "^1.1.1",
+    "eslint-module-utils": "^2.2.0"
   },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/github": "^5.2.10",
+    "@semantic-release/npm": "^5.1.4",
+    "@semantic-release/release-notes-generator": "^7.1.4",
     "coveralls": "^3.0.2",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.7.0",
@@ -52,6 +56,14 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ]
   },
   "config": {
     "commitizen": {
