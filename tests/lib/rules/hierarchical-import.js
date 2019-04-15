@@ -21,7 +21,10 @@ const testerSettings = {
   },
   settings: {
     'import/resolver': {
-      alias: [['@', getFilePath('./components')], ['~', getFilePath('.')]],
+      alias: {
+        map: [['@', getFilePath('./components')], ['~', getFilePath('.')]],
+        extensions: ['.js'],
+      },
     },
   },
 };
@@ -39,8 +42,12 @@ const spec = (filePath, targetPath, others = {}) =>
         ...others,
         errors: [
           code.startsWith('import')
-            ? errorMessage.replace(/require/g, 'import')
-            : errorMessage.replace(/import/g, 'require'),
+            ? errorMessage
+                .replace(/required/g, 'imported')
+                .replace(/require/g, 'import')
+            : errorMessage
+                .replace(/imported/g, 'required')
+                .replace(/import/g, 'require'),
         ],
       };
     }
@@ -105,15 +112,13 @@ ruleTester.run('hierarchical-import', rule, {
         options: [{ pathPatterns: ['components/(\\w+)/', 'routes/(\\w+)/'] }],
       }
     ),
-    // passing through
+
+    // custom path parser + out of rules
     ...spec(
       'routes/pages/Component.js',
       '../../components/concretes/Component.js',
       {
         options: [{ pathPatterns: ['components/(\\w+)/', 'routes/(\\w+)/'] }],
-        errors: [
-          'Do not require molecules from molecules. Molecules can contain only atoms.',
-        ],
       }
     ),
 
@@ -126,6 +131,23 @@ ruleTester.run('hierarchical-import', rule, {
       './ModuleComponentChild',
       { options: [{ module: 'loose' }] }
     ),
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      './ModuleComponentChild',
+      { options: [{ module: 'strict' }] }
+    ),
+
+    // module can import non-module components
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      '@/atoms/Component.js',
+      { options: [{ module: 'loose' }] }
+    ),
+    ...spec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      '@/atoms/Component.js',
+      { options: [{ module: 'strict' }] }
+    ),
 
     // children imports are allowed in loose mode
     ...spec(
@@ -133,11 +155,12 @@ ruleTester.run('hierarchical-import', rule, {
       './ModuleComponentOtherChild',
       { options: [{ module: 'loose' }] }
     ),
-    // strict module mode
+
+    // importing children module by other component is passed through in non-module mode
     ...spec(
-      'components/molecules/ModuleComponent/ModuleComponent.js',
-      './ModuleComponentOtherChild',
-      { options: [{ module: 'strict' }] }
+      'components/organisms/Component.js',
+      '@/molecules/ModuleComponent/ModuleComponentChild.js',
+      { options: [{ module: 'off' }] }
     ),
   ],
 
@@ -192,7 +215,30 @@ ruleTester.run('hierarchical-import', rule, {
       {
         options: [{ module: 'loose' }],
         errors: [
-          'Do not import molecules from molecules. Molecules can contain only atoms.',
+          'Do not import the other module children. ModuleComponentOther must be imported by "ModuleComponentOther" and its children, but found in ModuleComponentChild that belongs to "ModuleComponent".',
+        ],
+      }
+    ),
+
+    // importing children modules are blocked by other component/modules in 'loose' and 'strict' module mode
+    ...spec(
+      'components/organisms/Component.js',
+      '@/molecules/ModuleComponent/ModuleComponentChild.js',
+      {
+        options: [{ module: 'loose' }],
+        errors: [
+          'Do not import a module children. ModuleComponentChild must be imported by ModuleComponent and its children',
+        ],
+      }
+    ),
+
+    ...spec(
+      'components/organisms/Component.js',
+      '@/molecules/ModuleComponent/ModuleComponentChild.js',
+      {
+        options: [{ module: 'strict' }],
+        errors: [
+          'Do not import a module children. ModuleComponentChild must be imported by ModuleComponent and its children',
         ],
       }
     ),
@@ -204,7 +250,7 @@ ruleTester.run('hierarchical-import', rule, {
       {
         options: [{ module: 'strict' }],
         errors: [
-          'In "strict" mode, Only the root module "ModuleComponent" can use its children. "ModuleComponentChild" is not root module. The children components cannot use each other.',
+          'In "strict" mode, Only the root module "ModuleComponent" can import its children. "ModuleComponentChild" is not root module. The module children components cannot import each other.',
         ],
       }
     ),
