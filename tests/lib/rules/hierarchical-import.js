@@ -220,7 +220,7 @@ ruleTester.run('hierarchical-import', rule, {
       }
     ),
 
-    // importing children modules are blocked by other component/modules in 'loose' and 'strict' module mode
+    // importing children modules are blocked by the other components in 'loose' and 'strict' module mode
     ...spec(
       'components/organisms/Component.js',
       '@/molecules/ModuleComponent/ModuleComponentChild.js',
@@ -255,7 +255,7 @@ ruleTester.run('hierarchical-import', rule, {
       }
     ),
 
-    // stop the module-import
+    // in non-module mode
     ...spec(
       'components/molecules/ModuleComponent/ModuleComponent.js',
       './ModuleComponentChild',
