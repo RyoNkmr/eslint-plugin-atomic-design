@@ -59,6 +59,18 @@ const spec = (filePath, targetPath, others = {}) =>
     };
   });
 
+const moduleSpec = (filePath, targetPath, others = {}) => (modules = []) =>
+  modules.reduce(
+    (acc, module) => [
+      ...acc,
+      ...spec(filePath, targetPath, {
+        ...others,
+        options: [...(others.options || []), { module }],
+      }),
+    ],
+    []
+  );
+
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
@@ -126,28 +138,16 @@ ruleTester.run('hierarchical-import', rule, {
     ...spec('components/organisms/Component.js', './AnotherComponent'),
 
     // module-import
-    ...spec(
+    ...moduleSpec(
       'components/molecules/ModuleComponent/ModuleComponent.js',
-      './ModuleComponentChild',
-      { options: [{ module: 'loose' }] }
-    ),
-    ...spec(
-      'components/molecules/ModuleComponent/ModuleComponent.js',
-      './ModuleComponentChild',
-      { options: [{ module: 'strict' }] }
-    ),
+      './ModuleComponentChild'
+    )(['loose', 'strict']),
 
     // module can import non-module components
-    ...spec(
+    ...moduleSpec(
       'components/molecules/ModuleComponent/ModuleComponent.js',
-      '@/atoms/Component.js',
-      { options: [{ module: 'loose' }] }
-    ),
-    ...spec(
-      'components/molecules/ModuleComponent/ModuleComponent.js',
-      '@/atoms/Component.js',
-      { options: [{ module: 'strict' }] }
-    ),
+      '@/atoms/Component.js'
+    )(['loose', 'strict']),
 
     // children imports are allowed in loose mode
     ...spec(
@@ -157,11 +157,10 @@ ruleTester.run('hierarchical-import', rule, {
     ),
 
     // importing children module by other component is passed through in non-module mode
-    ...spec(
+    ...moduleSpec(
       'components/organisms/Component.js',
-      '@/molecules/ModuleComponent/ModuleComponentChild.js',
-      { options: [{ module: 'off' }] }
-    ),
+      '@/molecules/ModuleComponent/ModuleComponentChild.js'
+    )(['off', false]),
   ],
 
   invalid: [
@@ -208,6 +207,17 @@ ruleTester.run('hierarchical-import', rule, {
       ],
     }),
 
+    // module cannot import higher level non-module components
+    ...moduleSpec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      '@/organisms/Component.js',
+      {
+        errors: [
+          'Do not import organisms from molecules. Molecules can contain only atoms.',
+        ],
+      }
+    )(['loose', 'strict', 'off', false]),
+
     // cannot import other module in module mode
     ...spec(
       'components/molecules/ModuleComponent/ModuleComponentChild.js',
@@ -221,27 +231,15 @@ ruleTester.run('hierarchical-import', rule, {
     ),
 
     // importing children modules are blocked by the other components in 'loose' and 'strict' module mode
-    ...spec(
+    ...moduleSpec(
       'components/organisms/Component.js',
       '@/molecules/ModuleComponent/ModuleComponentChild.js',
       {
-        options: [{ module: 'loose' }],
         errors: [
           'Do not import a module children. ModuleComponentChild must be imported by ModuleComponent and its children',
         ],
       }
-    ),
-
-    ...spec(
-      'components/organisms/Component.js',
-      '@/molecules/ModuleComponent/ModuleComponentChild.js',
-      {
-        options: [{ module: 'strict' }],
-        errors: [
-          'Do not import a module children. ModuleComponentChild must be imported by ModuleComponent and its children',
-        ],
-      }
-    ),
+    )(['loose', 'strict']),
 
     // children imports are blocked in the strict module mode
     ...spec(
@@ -255,26 +253,37 @@ ruleTester.run('hierarchical-import', rule, {
       }
     ),
 
+    // invalid source module name
+    ...moduleSpec(
+      'components/molecules/ModuleComponent/InvalidComponent.js',
+      './ModuleComponentChild',
+      {
+        errors: [
+          'Invalid module found. InvalidComponent is not a part of ModuleComponent, InvalidComponent should have the name starts with ModuleComponent',
+        ],
+      }
+    )(['loose', 'strict']),
+
+    // invalid target module name
+    ...moduleSpec(
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      '../ModuleComponentOther/InvalidComponent.js',
+      {
+        errors: [
+          'Invalid module found. InvalidComponent is not a part of ModuleComponentOther, InvalidComponent should have the name starts with ModuleComponentOther',
+        ],
+      }
+    )(['loose', 'strict']),
+
     // in non-module mode
-    ...spec(
+    ...moduleSpec(
       'components/molecules/ModuleComponent/ModuleComponent.js',
       './ModuleComponentChild',
       {
-        options: [{ module: 'off' }],
         errors: [
           'Do not import molecules from molecules. Molecules can contain only atoms.',
         ],
       }
-    ),
-    ...spec(
-      'components/molecules/ModuleComponent/ModuleComponent.js',
-      './ModuleComponentChild',
-      {
-        options: [{ module: false }],
-        errors: [
-          'Do not import molecules from molecules. Molecules can contain only atoms.',
-        ],
-      }
-    ),
+    )(['off', false]),
   ],
 });
