@@ -66,7 +66,7 @@ Additionally, this can be defined *the same level components* as an Array of str
 default: `['atoms', 'molecules', '=organisms', 'templates', 'pages']`
 
 ##### pathPatterns `Array<RegExpString>`
-Patterns should contain a capturing group `(\\w+)`:
+Patterns should contain a capturing group like `(\\w+)`:
 
 ```javascript
 {
@@ -77,5 +77,52 @@ Patterns should contain a capturing group `(\\w+)`:
 or `<DefaultParser>` takes the last match of one of the `levels` in import paths.
 
 default: `<DefaultParser>`
+
+##### module `'strict' | 'loose' | 'off' | false`
+"module" mode allows to have children as module's "private" components.
+
+in 'loose' mode (default setting):
+
+```javascript
+// in './components/molecules/SuperDatepicker/SuperDatepickerCalender.js'
+
+// valid
+import CommonLabel from '@/components/atom/CommonLabel.js';
+import SuperDatepickerCalenderInput from '@/components/molecules/SuperDatepicker/SuperDatepickerCalenderInput.js';
+
+// invalid (Module children are "private")
+import OtherModuleChildren from '@/components/molecules/OtherModule/OtherModuleChildren.js';
+```
+
+in 'strict' mode, "private" children are protected even if importing comes from the same module siblings:
+
+```javascript
+// in './components/molecules/SuperDatepicker/SuperDatepickerCalender.js'
+
+// valid
+import CommonLabel from '@/components/atom/CommonLabel.js';
+
+// invalid (Module children are "private")
+import OtherModuleChildren from '@/components/molecules/OtherModule/OtherModuleChildren.js';
+
+// invalid (Only the module root component can import its children)
+import SuperDatepickerCalenderInput from '@/components/molecules/SuperDatepicker/SuperDatepickerCalenderInput.js';
+// valid in the "root" component './components/molecules/SuperDatepicker/SuperDatepicker.js'
+```
+
+in non-module mode:
+```javascript
+// in './components/molecules/SuperDatepicker/SuperDatepickerCalender.js'
+
+// valid
+import CommonLabel from '@/components/atom/CommonLabel.js';
+
+// invalid (molecules -> molecules)
+import OtherModuleChildren from '@/components/molecules/OtherModule/OtherModuleChildren.js';
+import SuperDatepickerCalenderInput from '@/components/molecules/SuperDatepicker/SuperDatepickerCalenderInput.js';
+
+```
+
+default: `loose`
 
 © [RyoNkmr](https://github.com/RyoNkmr)
