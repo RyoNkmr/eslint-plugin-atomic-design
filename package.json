@@ -5,7 +5,8 @@
   "keywords": [
     "eslint",
     "eslintplugin",
-    "eslint-plugin"
+    "eslint-plugin",
+    "atomic design"
   ],
   "author": "Ryonkmr",
   "main": "lib/index.js",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.10",
     "@semantic-release/npm": "^5.1.4",
     "@semantic-release/release-notes-generator": "^7.1.4",
@@ -63,8 +65,9 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
+      "@semantic-release/github",
       "@semantic-release/npm",
-      "@semantic-release/github"
+      "@semantic-release/git"
     ]
   },
   "config": {
