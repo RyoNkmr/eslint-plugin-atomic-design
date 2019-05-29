@@ -65,7 +65,7 @@ const moduleSpec = (filePath, targetPath, others = {}) => (modules = []) =>
       ...acc,
       ...spec(filePath, targetPath, {
         ...others,
-        options: [...(others.options || []), { module }],
+        options: [{ ...(others.options || []), module }],
       }),
     ],
     []
@@ -149,6 +149,13 @@ ruleTester.run('hierarchical-import', rule, {
       '@/atoms/Component.js'
     )(['loose', 'strict']),
 
+    // module root components are allowed to be imported by the other modules or components
+    ...moduleSpec(
+      'components/organisms/Component.js',
+      '@/molecules/ModuleComponent/ModuleComponent.js',
+      { options: [{ levels: ['molecules', 'organisms'] }] }
+    )(['loose', 'strict']),
+
     // children imports are allowed in loose mode
     ...spec(
       'components/molecules/ModuleComponent/ModuleComponentChild.js',
@@ -218,14 +225,26 @@ ruleTester.run('hierarchical-import', rule, {
       }
     )(['loose', 'strict', 'off', false]),
 
-    // cannot import other module in module mode
+    // invalid level imports in module mode
     ...spec(
-      'components/molecules/ModuleComponent/ModuleComponentChild.js',
-      '../ModuleComponentOther/ModuleComponentOther.js',
+      'components/molecules/ModuleComponent/ModuleComponent.js',
+      '@/organisms/BigModuleComponent/BigModuleComponent.js',
       {
         options: [{ module: 'loose' }],
         errors: [
-          'Do not import the other module children. ModuleComponentOther must be imported by "ModuleComponentOther" and its children, but found in ModuleComponentChild that belongs to "ModuleComponent".',
+          'Do not import organisms from molecules. Molecules can contain only atoms.',
+        ],
+      }
+    ),
+
+    // cannot import the other module's children
+    ...spec(
+      'components/organisms/BigModuleComponent/BigModuleComponent.js',
+      '@/molecules/ModuleComponent/ModuleComponentChild.js',
+      {
+        options: [{ module: 'loose' }],
+        errors: [
+          'Do not import the other module children. ModuleComponentChild must be imported by "ModuleComponent" and its children, but found in BigModuleComponent that belongs to "BigModuleComponent".',
         ],
       }
     ),
