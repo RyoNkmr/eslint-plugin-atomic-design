@@ -55,8 +55,9 @@
     "node": ">=8.9.4"
   },
   "license": "MIT",
-  "huskey": {
+  "husky": {
     "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook",
       "pre-commit": "pretty-quick --staged"
     }
   },
