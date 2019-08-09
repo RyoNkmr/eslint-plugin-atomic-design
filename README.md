@@ -1,6 +1,8 @@
 # eslint-plugin-atomic-design
+
 [![npm version](https://badge.fury.io/js/eslint-plugin-atomic-design.svg)](https://badge.fury.io/js/eslint-plugin-atomic-design)
-[![CircleCI](https://circleci.com/gh/RyoNkmr/eslint-plugin-atomic-design.svg?style=svg)](https://circleci.com/gh/RyoNkmr/eslint-plugin-atomic-design)
+[![CircleCI](https://circleci.com/gh/RyoNkmr/eslint-plugin-atomic-design.svg?style=shield)](https://circleci.com/gh/RyoNkmr/eslint-plugin-atomic-design)
+[![downloads](https://img.shields.io/npm/dt/eslint-plugin-atomic-design.svg)](https://www.npmjs.com/package/eslint-plugin-atomic-design)
 [![Coverage Status](https://coveralls.io/repos/github/RyoNkmr/eslint-plugin-atomic-design/badge.svg?branch=master)](https://coveralls.io/github/RyoNkmr/eslint-plugin-atomic-design?branch=master)
 ![david-dm](https://david-dm.org/RyoNkmr/eslint-plugin-atomic-design.svg)
 
@@ -26,9 +28,7 @@ Add `atomic-design` to the plugins section of your `.eslintrc` configuration fil
 
 ```json
 {
-    "plugins": [
-        "atomic-design"
-    ]
+  "plugins": ["atomic-design"]
 }
 ```
 
@@ -36,26 +36,30 @@ Then configure the rules you want to use under the rules section.
 
 ```json
 {
-    "rules": {
-        "atomic-design/hierarchical-import": 2
-    }
+  "rules": {
+    "atomic-design/hierarchical-import": 2
+  }
 }
 ```
 
 ## Rules
 
 ### Hierarchical Dependencies (hierarchical-import)
+
 Currently, this is the only rule of this plugin.
 
 #### options
+
 ##### excludes `Array<RegExpString>`
+
 Matching patterns ignore both target file paths and importing paths.
 
 default: `['node_modules\/\\w']`
 
 ##### levels `Array<String|String[]>`
-Components levels in your projects listing up in order of size and starting with '=' are capable of *the same level importing.*  
-Additionally, this can be defined *the same level components* as an Array of strings:
+
+Components levels in your projects listing up in order of size and starting with '=' are capable of _the same level importing._  
+Additionally, this can be defined _the same level components_ as an Array of strings:
 
 ```javascript
 {
@@ -66,6 +70,7 @@ Additionally, this can be defined *the same level components* as an Array of str
 default: `['atoms', 'molecules', '=organisms', 'templates', 'pages']`
 
 ##### pathPatterns `Array<RegExpString>`
+
 Patterns should contain a capturing group like `(\\w+)`:
 
 ```javascript
@@ -79,6 +84,7 @@ or `<DefaultParser>` takes the last match of one of the `levels` in import paths
 default: `<DefaultParser>`
 
 ##### module `'strict' | 'loose' | 'off' | false`
+
 "module" mode allows to have children as module's "private" components.
 
 in 'loose' mode (default setting):
@@ -111,6 +117,7 @@ import SuperDatepickerCalenderInput from '@/components/molecules/SuperDatepicker
 ```
 
 in non-module mode:
+
 ```javascript
 // in './components/molecules/SuperDatepicker/SuperDatepickerCalender.js'
 
@@ -120,7 +127,6 @@ import CommonLabel from '@/components/atom/CommonLabel.js';
 // invalid (molecules -> molecules)
 import OtherModuleChildren from '@/components/molecules/OtherModule/OtherModuleChildren.js';
 import SuperDatepickerCalenderInput from '@/components/molecules/SuperDatepicker/SuperDatepickerCalenderInput.js';
-
 ```
 
 default: `loose`
