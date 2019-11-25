@@ -30,7 +30,7 @@
     "@semantic-release/release-notes-generator": "^7.2.1",
     "coveralls": "^3.0.6",
     "cz-conventional-changelog": "^3.0.2",
-    "eslint": "^5.7.0",
+    "eslint": "^6.7.1",
     "eslint-plugin-import": "^2.18.2",
     "husky": "^3.0.3",
     "mocha": "^6.2.0",
