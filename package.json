@@ -23,10 +23,10 @@
   },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.0",
-    "@semantic-release/commit-analyzer": "^6.2.0",
-    "@semantic-release/git": "^7.0.16",
-    "@semantic-release/github": "^5.4.2",
-    "@semantic-release/npm": "^5.1.15",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.0.7",
+    "@semantic-release/npm": "^7.0.5",
     "@semantic-release/release-notes-generator": "^9.0.0",
     "coveralls": "^3.0.6",
     "cz-conventional-changelog": "^3.0.2",
@@ -38,7 +38,7 @@
     "nyc": "^15.0.0",
     "prettier": "^1.18.2",
     "pretty-quick": "^2.0.1",
-    "semantic-release": "^15.13.20"
+    "semantic-release": "^17.1.0"
   },
   "homepage": "https://github.com/RyoNkmr/eslint-plugin-atomic-design",
   "repository": {
