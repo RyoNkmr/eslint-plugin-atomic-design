@@ -53,7 +53,7 @@
     "eslint": ">=7.22.0"
   },
   "engines": {
-    "node": ">=8.9.4"
+    "node": ">=12"
   },
   "license": "MIT",
   "release": {
