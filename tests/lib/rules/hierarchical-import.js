@@ -22,7 +22,10 @@ const testerSettings = {
   settings: {
     'import/resolver': {
       alias: {
-        map: [['@', getFilePath('./components')], ['~', getFilePath('.')]],
+        map: [
+          ['@', getFilePath('./components')],
+          ['~', getFilePath('.')],
+        ],
         extensions: ['.js'],
       },
     },
@@ -33,7 +36,7 @@ const spec = (filePath, targetPath, others = {}) =>
   [
     `const Component = require("${targetPath}")`,
     `import Component from "${targetPath}"`,
-  ].map(code => {
+  ].map((code) => {
     const errorMessage = others.errors && others.errors[0];
     if (errorMessage) {
       return {
@@ -79,6 +82,9 @@ const ruleTester = new RuleTester(testerSettings);
 
 ruleTester.run('hierarchical-import', rule, {
   valid: [
+    // nothing happens
+    ...spec('components/molecules/Component.js', '', { code: '' }),
+
     // relative path resolution and extension omittion
     ...spec('components/molecules/Component.js', '../atoms/Component.js'),
     ...spec('components/molecules/Component.js', '../atoms/Component'),
@@ -113,7 +119,6 @@ ruleTester.run('hierarchical-import', rule, {
 
     // out of rules
     ...spec('components/molecules/Component.js', '../modals/Components.js'),
-    // out of rules
     ...spec('index.js', '../atoms/Component'),
 
     // custom path parser
