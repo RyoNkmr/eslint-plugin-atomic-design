@@ -38,7 +38,7 @@
     "nyc": "^15.0.0",
     "prettier": "^2.1.0",
     "pretty-quick": "^2.0.1",
-    "semantic-release": "^15.13.20"
+    "semantic-release": "^17.2.3"
   },
   "homepage": "https://github.com/RyoNkmr/eslint-plugin-atomic-design",
   "repository": {
