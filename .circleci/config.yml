@@ -37,7 +37,7 @@ jobs:
     steps:
       - checkout
       - run: npm ci
-      - run: npm install -g commitizen
+      - run: npm i -g --prefix=$HOME/.local commitizen
       - run: npx semantic-release
 
 workflows:
