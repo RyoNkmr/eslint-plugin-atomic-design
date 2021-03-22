@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-atomic-design",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "ESLint rules for Atomic Designed projects",
   "keywords": [
     "eslint",
