@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/RyoNkmr/eslint-plugin-atomic-design/compare/v1.0.0...v1.0.1) (2021-03-25)
+
+
+### Bug Fixes
+
+* remove post-install script ([ffb7338](https://github.com/RyoNkmr/eslint-plugin-atomic-design/commit/ffb733839fb473614c0c3f9735f4f7c768aebd13)), closes [#163](https://github.com/RyoNkmr/eslint-plugin-atomic-design/issues/163)
+
 # [1.0.0](https://github.com/RyoNkmr/eslint-plugin-atomic-design/compare/v0.2.2...v1.0.0) (2021-03-22)
 
 
