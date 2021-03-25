@@ -17,8 +17,7 @@
     "prettify": "prettier --write ./lib/**/*.js ./tests/**/*.js",
     "semantic-release": "semantic-release",
     "commit": "cz",
-    "prepare": "husky install",
-    "postinstall": "husky install"
+    "prepare": "husky install"
   },
   "dependencies": {
     "eslint-import-resolver-alias": "^1.1.2",
