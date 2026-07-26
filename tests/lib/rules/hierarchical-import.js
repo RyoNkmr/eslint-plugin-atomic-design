@@ -9,21 +9,24 @@
 //------------------------------------------------------------------------------
 
 const getFilePath = (...relativePath) =>
-  require('path').join(process.cwd(), 'tests', 'files', ...relativePath);
+  require('path').join(__dirname, '..', '..', 'files', ...relativePath);
 
 const rule = require('../../../lib/rules/hierarchical-import');
-const RuleTester = require('eslint').RuleTester;
+const { RuleTester } = require('eslint');
+
+// eslint-module-utils はプロジェクトルート起点の相対パスで resolver を解決する
+const RESOLVER = './tools/import-resolver.js';
 
 const testerSettings = {
-  parserOptions: {
-    ecmaVersion: 6,
+  languageOptions: {
+    ecmaVersion: 2022,
     sourceType: 'module',
   },
   settings: {
     'import/resolver': {
-      alias: {
+      [RESOLVER]: {
         map: [
-          ['@', getFilePath('./components')],
+          ['@', getFilePath('components')],
           ['~', getFilePath('.')],
         ],
         extensions: ['.js'],
@@ -62,17 +65,19 @@ const spec = (filePath, targetPath, others = {}) =>
     };
   });
 
-const moduleSpec = (filePath, targetPath, others = {}) => (modules = []) =>
-  modules.reduce(
-    (acc, module) => [
-      ...acc,
-      ...spec(filePath, targetPath, {
-        ...others,
-        options: [{ ...(others.options || []), module }],
-      }),
-    ],
-    []
-  );
+const moduleSpec =
+  (filePath, targetPath, others = {}) =>
+  (modules = []) =>
+    modules.reduce(
+      (acc, module) => [
+        ...acc,
+        ...spec(filePath, targetPath, {
+          ...others,
+          options: [{ ...(others.options ? others.options[0] : {}), module }],
+        }),
+      ],
+      [],
+    );
 
 //------------------------------------------------------------------------------
 // Tests
@@ -83,7 +88,10 @@ const ruleTester = new RuleTester(testerSettings);
 ruleTester.run('hierarchical-import', rule, {
   valid: [
     // nothing happens
-    ...spec('components/molecules/Component.js', '', { code: '' }),
+    {
+      code: '',
+      filename: getFilePath('components/molecules/Component.js'),
+    },
 
     // relative path resolution and extension omittion
     ...spec('components/molecules/Component.js', '../atoms/Component.js'),
@@ -93,18 +101,18 @@ ruleTester.run('hierarchical-import', rule, {
     ...spec('components/molecules/Component.js', '~/atoms/Component'),
     ...spec(
       'components/molecules/Component.js',
-      '@/components/atoms/Component'
+      '@/components/atoms/Component',
     ),
 
     // node_modules resolution
     ...spec(
       'components/organisms/Component.js',
-      'component_library/molecules/Component'
+      'component_library/molecules/Component',
     ),
     // they're ignored by this rule as deafult
     ...spec(
       'components/molecules/Component.js',
-      'component_library/molecules/Component'
+      'component_library/molecules/Component',
     ),
 
     // custom hierarchy
@@ -127,7 +135,7 @@ ruleTester.run('hierarchical-import', rule, {
       '../../components/organisms/Component.js',
       {
         options: [{ pathPatterns: ['components/(\\w+)/', 'routes/(\\w+)/'] }],
-      }
+      },
     ),
 
     // custom path parser + out of rules
@@ -136,7 +144,7 @@ ruleTester.run('hierarchical-import', rule, {
       '../../components/concretes/Component.js',
       {
         options: [{ pathPatterns: ['components/(\\w+)/', 'routes/(\\w+)/'] }],
-      }
+      },
     ),
 
     // the same level
@@ -145,33 +153,33 @@ ruleTester.run('hierarchical-import', rule, {
     // module-import
     ...moduleSpec(
       'components/molecules/ModuleComponent/ModuleComponent.js',
-      './ModuleComponentChild'
+      './ModuleComponentChild',
     )(['loose', 'strict']),
 
     // module can import non-module components
     ...moduleSpec(
       'components/molecules/ModuleComponent/ModuleComponent.js',
-      '@/atoms/Component.js'
+      '@/atoms/Component.js',
     )(['loose', 'strict']),
 
     // module root components are allowed to be imported by the other modules or components
     ...moduleSpec(
       'components/organisms/Component.js',
       '@/molecules/ModuleComponent/ModuleComponent.js',
-      { options: [{ levels: ['molecules', 'organisms'] }] }
+      { options: [{ levels: ['molecules', 'organisms'] }] },
     )(['loose', 'strict']),
 
     // children imports are allowed in loose mode
     ...spec(
       'components/molecules/ModuleComponent/ModuleComponentChild.js',
       './ModuleComponentOtherChild',
-      { options: [{ module: 'loose' }] }
+      { options: [{ module: 'loose' }] },
     ),
 
     // importing children module by other component is passed through in non-module mode
     ...moduleSpec(
       'components/organisms/Component.js',
-      '@/molecules/ModuleComponent/ModuleComponentChild.js'
+      '@/molecules/ModuleComponent/ModuleComponentChild.js',
     )(['off', false]),
   ],
 
@@ -227,7 +235,7 @@ ruleTester.run('hierarchical-import', rule, {
         errors: [
           'Do not import organisms from molecules. Molecules can contain only atoms.',
         ],
-      }
+      },
     )(['loose', 'strict', 'off', false]),
 
     // invalid level imports in module mode
@@ -239,7 +247,7 @@ ruleTester.run('hierarchical-import', rule, {
         errors: [
           'Do not import organisms from molecules. Molecules can contain only atoms.',
         ],
-      }
+      },
     ),
 
     // cannot import the other module's children
@@ -251,7 +259,7 @@ ruleTester.run('hierarchical-import', rule, {
         errors: [
           'Do not import the other module children. ModuleComponentChild must be imported by "ModuleComponent" and its children, but found in BigModuleComponent that belongs to "BigModuleComponent".',
         ],
-      }
+      },
     ),
 
     // importing children modules are blocked by the other components in 'loose' and 'strict' module mode
@@ -262,7 +270,7 @@ ruleTester.run('hierarchical-import', rule, {
         errors: [
           'Do not import a module children. ModuleComponentChild must be imported by ModuleComponent and its children',
         ],
-      }
+      },
     )(['loose', 'strict']),
 
     // children imports are blocked in the strict module mode
@@ -274,7 +282,7 @@ ruleTester.run('hierarchical-import', rule, {
         errors: [
           'In "strict" mode, Only the root module "ModuleComponent" can import its children. "ModuleComponentChild" is not root module. The module children components cannot import each other.',
         ],
-      }
+      },
     ),
 
     // invalid source module name
@@ -285,7 +293,7 @@ ruleTester.run('hierarchical-import', rule, {
         errors: [
           'Invalid module found. InvalidComponent is not a part of ModuleComponent, InvalidComponent should have the name starts with ModuleComponent',
         ],
-      }
+      },
     )(['loose', 'strict']),
 
     // invalid target module name
@@ -296,7 +304,7 @@ ruleTester.run('hierarchical-import', rule, {
         errors: [
           'Invalid module found. InvalidComponent is not a part of ModuleComponentOther, InvalidComponent should have the name starts with ModuleComponentOther',
         ],
-      }
+      },
     )(['loose', 'strict']),
 
     // in non-module mode
@@ -307,7 +315,7 @@ ruleTester.run('hierarchical-import', rule, {
         errors: [
           'Do not import molecules from molecules. Molecules can contain only atoms.',
         ],
-      }
+      },
     )(['off', false]),
   ],
 });
