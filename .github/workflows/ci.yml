@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # サポート中の LTS のみ。Node 20 は 2026-04 に EOL
+        node: [22, 24]
+        eslint: [9, 10]
+    name: test (node ${{ matrix.node }}, eslint ${{ matrix.eslint }})
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      # サポート対象の ESLint すべてでルールが動作することを確認する。
+      # @eslint/js は eslint を peer に持つため、同じメジャーに揃える
+      - run: npm install --no-save --no-package-lock eslint@${{ matrix.eslint }} @eslint/js@${{ matrix.eslint }}
+      - run: npx eslint --version
+      - run: npm test
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      # .c8rc.json の閾値を下回った場合はここで失敗する
+      - name: Run tests with coverage
+        shell: bash
+        run: |
+          {
+            echo '### Coverage'
+            echo '```'
+            npm run test:coverage
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+  release:
+    needs: [lint, test, coverage]
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
