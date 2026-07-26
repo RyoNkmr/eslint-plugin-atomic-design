@@ -8,9 +8,8 @@ module.exports = [
   {
     ignores: [
       'coverage/**',
-      // 意図的に違反を含むフィクスチャとサンプル
+      // 意図的に違反を含むフィクスチャ
       'tests/files/**',
-      'examples/**',
     ],
   },
   js.configs.recommended,

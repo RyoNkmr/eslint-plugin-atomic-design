@@ -42,8 +42,28 @@ jobs:
       - run: npx eslint --version
       - run: npm test
 
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      # .c8rc.json の閾値を下回った場合はここで失敗する
+      - name: Run tests with coverage
+        shell: bash
+        run: |
+          {
+            echo '### Coverage'
+            echo '```'
+            npm run test:coverage
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
   release:
-    needs: [lint, test]
+    needs: [lint, test, coverage]
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:

@@ -27,12 +27,10 @@
     "test": "mocha",
     "test:coverage": "c8 mocha",
     "lint": "eslint .",
-    "lint:examples": "eslint --config examples/eslint.config.js examples",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "semantic-release": "semantic-release",
-    "commit": "cz",
     "prepare": "husky"
   },
   "dependencies": {
@@ -50,8 +48,6 @@
     "@semantic-release/npm": "^13.1.5",
     "@semantic-release/release-notes-generator": "^14.1.1",
     "c8": "^12.0.0",
-    "commitizen": "^4.3.2",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^10.8.0",
     "globals": "^17.7.0",
     "husky": "^9.1.7",
@@ -82,11 +78,6 @@
       "@semantic-release/npm",
       "@semantic-release/git"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "lint-staged": {
     "*.{js,mjs,cjs,json,md,yml,yaml}": "prettier --write"
