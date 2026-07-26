@@ -24,10 +24,8 @@ module.exports = [
   {
     files: ['tests/**/*.js'],
     languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.mocha,
-      },
+      // describe / it は node:test から明示的に import している
+      globals: globals.node,
     },
   },
 ];
