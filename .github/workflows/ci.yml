@@ -27,7 +27,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [20, 22, 24]
+        # サポート中の LTS のみ。Node 20 は 2026-04 に EOL
+        node: [22, 24]
         eslint: [9, 10]
     name: test (node ${{ matrix.node }}, eslint ${{ matrix.eslint }})
     steps:
