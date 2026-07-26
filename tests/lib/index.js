@@ -3,8 +3,9 @@
  */
 'use strict';
 
-const assert = require('assert');
-const path = require('path');
+const assert = require('node:assert');
+const path = require('node:path');
+const { describe, it } = require('node:test');
 const { ESLint } = require('eslint');
 
 const plugin = require('../../lib');

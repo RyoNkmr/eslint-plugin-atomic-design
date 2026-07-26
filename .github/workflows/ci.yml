@@ -53,7 +53,7 @@ jobs:
           node-version: lts/*
           cache: npm
       - run: npm ci
-      # .c8rc.json の閾値を下回った場合はここで失敗する
+      # test:coverage に指定した閾値を下回った場合はここで失敗する
       - name: Run tests with coverage
         shell: bash
         run: |

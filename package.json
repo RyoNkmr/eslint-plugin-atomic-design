@@ -24,8 +24,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "mocha",
-    "test:coverage": "c8 mocha",
+    "test": "node --test --require ./tests/setup.js \"tests/lib/**/*.js\"",
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-include=\"lib/**\" --test-coverage-lines=90 --test-coverage-branches=85 --test-coverage-functions=95 --require ./tests/setup.js \"tests/lib/**/*.js\"",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
@@ -47,12 +47,10 @@
     "@semantic-release/github": "^12.0.9",
     "@semantic-release/npm": "^13.1.5",
     "@semantic-release/release-notes-generator": "^14.1.1",
-    "c8": "^12.0.0",
     "eslint": "^10.8.0",
     "globals": "^17.7.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.2.0",
-    "mocha": "^11.7.6",
     "prettier": "^3.9.6",
     "semantic-release": "^25.0.8",
     "typescript": "^7.0.2"

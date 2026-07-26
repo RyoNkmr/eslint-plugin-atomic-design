@@ -1,4 +1,0 @@
-{
-  "spec": "tests/lib/**/*.js",
-  "recursive": true
-}
