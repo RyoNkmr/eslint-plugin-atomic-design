@@ -126,7 +126,7 @@ ruleTester.run('hierarchical-import', rule, {
     }),
 
     // out of rules
-    ...spec('components/molecules/Component.js', '../modals/Components.js'),
+    ...spec('components/molecules/Component.js', '../modals/Component.js'),
     ...spec('index.js', '../atoms/Component'),
 
     // custom path parser
