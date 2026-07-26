@@ -1,3 +1,17 @@
+# [2.0.0](https://github.com/RyoNkmr/eslint-plugin-atomic-design/compare/v1.0.1...v2.0.0) (2026-07-26)
+
+
+* feat!: support ESLint 9 and 10 with flat config ([1029599](https://github.com/RyoNkmr/eslint-plugin-atomic-design/commit/1029599cbbf76090137a45cfd1537b3ec18765e4))
+
+
+### BREAKING CHANGES
+
+* ESLint 8 and older are no longer supported; the minimum
+is ESLint 9. configs.recommended is now a flat config object, and the
+eslintrc shape moved to configs['recommended-legacy']. Unknown rule
+options are rejected instead of ignored, and eslint-import-resolver-alias
+is no longer a dependency.
+
 ## [1.0.1](https://github.com/RyoNkmr/eslint-plugin-atomic-design/compare/v1.0.0...v1.0.1) (2021-03-25)
 
 
